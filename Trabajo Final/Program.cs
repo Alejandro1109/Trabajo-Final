@@ -49,7 +49,7 @@ namespace Trabajo_Final
                         Environment.Exit(0);
                         break;
                 }
-                Console.Write("\t\n¿Desea regresar al menú? [S/N] -> "); 
+                Console.Write("\t\n¿Desea regresar al menú? [s/n] -> "); 
                 regresar = char.ToUpper(Console.ReadKey().KeyChar);
                 Console.Clear();
             } while (regresar == 'S');

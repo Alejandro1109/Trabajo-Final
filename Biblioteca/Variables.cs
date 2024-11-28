@@ -16,11 +16,11 @@ namespace Biblioteca
     {
 
         //Método que verifica si un código existe en el arreglo de items.
-        public static int VerificarCodigo(string a)
+        public static int VerificarCodigoExiste(string a)
         {
             for (int i = 0; i < Variables.items.GetLongLength(0); i++)
             {
-                if (a == Variables.items[i, 0])
+                if (a.ToUpper() == Variables.items[i, 0])
                 {
                     return 1;
                 }
@@ -67,29 +67,48 @@ namespace Biblioteca
             return 0;
 
         }
-        public static int verificarCodigoNoRepitente(string cadena, int numeroDeOrden)
+        public static int verificarCodigoNoRepitente(string cadena)
         {
-            for (int i = 0; i < numeroDeOrden; i++)
+            for (int i = 0; i < Variables.items.GetLongLength(0); i++)
             {
-                if (cadena == Variables.items[i, 0])
+                if (Variables.items[i, 0] == cadena)
                 {
-                    Console.WriteLine("Codigo repitente");
+                    Console.WriteLine("TESTE");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("Codigo repitente ");
+                    Console.ResetColor();
                     return 0;
                 }
             }
             return 1;
         }
-        public static int verificarNombreNoRepitente(string cadena, int numeroDeOrden)
+        public static int verificarNombreNoRepitente(string cadena)
         {
-            for (int i = 0; i < numeroDeOrden; i++)
+            for (int i = 0; i < Variables.items.GetLongLength(0); i++)
             {
                 if (cadena == Variables.items[i, 1])
                 {
-                    Console.WriteLine("Nombre repitente");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("Nombre repitente ");
+                    Console.ResetColor();
                     return 0;
                 }
             }
             return 1;
+        }
+
+        public static bool verificarExisteProductosRegistrados()
+        {
+            for (int i = 0; i < Variables.items.GetLongLength(0); i++)
+            {
+                if (!string.IsNullOrEmpty(Variables.items[i, 0]))
+                {
+                    return true;
+                }
+
+            }
+            return false;
+
         }
     }
 }

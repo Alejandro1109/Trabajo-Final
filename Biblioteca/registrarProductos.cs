@@ -43,63 +43,63 @@ namespace Biblioteca
             public void Registrar(int opcion)
             {
                 Console.Clear();
-                int verificarCodigo1, verificarCodigo2, verificarStock, verificarPrecio, verificarCodigo3, verificarNombre;
+                int verificarCodigo1, verificarCodigo2, stockValido, precioValido, verificarCodigo3, verificarNombre;
                 char continuar = 'o';
+                string codigo, nombre;
 
                 Console.WriteLine("REGISTRO DE PRODUCTOS\n");
 
 
-                for (int i = 1; ; i++)
+                for (int i = 0; ; i++)
                 {
                     do
                     {
                         do
                         {
-                            Console.WriteLine($"\nProducto {i}");
+                            Console.WriteLine($"\nProducto {i+1}");
                             Console.Write("-> Código (ejemplo:\"P00000\"): ");
-                            Variables.items[Variables.valor + i, 0] = Console.ReadLine();
-                            verificarCodigo1 = MetodosAuxiliares.VerificarCodigo(Variables.items[Variables.valor + i, 0]);
-                            verificarCodigo2 = MetodosAuxiliares.VerificarCodigoValido(Variables.items[Variables.valor + i, 0]);
-                            verificarCodigo3 = MetodosAuxiliares.verificarCodigoNoRepitente(Variables.items[Variables.valor + i, 0], i);
+                            codigo = Console.ReadLine();
+                            verificarCodigo1 = MetodosAuxiliares.VerificarCodigoExiste(codigo);
+                            verificarCodigo2 = MetodosAuxiliares.VerificarCodigoValido(codigo);
+                            verificarCodigo3 = MetodosAuxiliares.verificarCodigoNoRepitente(codigo);
                         }
-                        while (verificarCodigo1 == 0 || verificarCodigo2 == 0 || verificarCodigo3 == 0);
-
+                        while (verificarCodigo1 == 1 || verificarCodigo2 == 0 || verificarCodigo3 == 0);
+                        Variables.items[Variables.valor, 0] = codigo.ToUpper();
 
                         do
                         {
                             Console.Write("-> Nombre: ");
-                            Variables.items[Variables.valor + i, 1] = Console.ReadLine();
+                            nombre = Console.ReadLine();
+                            
 
-                            if (Variables.items[Variables.valor + i, 1].Length < 3)
+                            if (nombre.Length < 3)
                             {
                                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                                Console.Write("[Error] ");
+                                Console.WriteLine("Cantidad de caracteres muy bajo para corresponder a la de un nombre. ");
                                 Console.ResetColor();
-                                Console.Write("Cantidad de caracteres muy bajo para corresponder a la de un nombre.\n");
                             }
-                            verificarNombre = MetodosAuxiliares.verificarNombreNoRepitente(Variables.items[Variables.valor + i, 1], i);
-
+                            verificarNombre = MetodosAuxiliares.verificarNombreNoRepitente(nombre);     
                         }
-                        while (Variables.items[Variables.valor + i, 1].Length < 3 || verificarNombre == 0);
+                        while (nombre.Length < 3 || verificarNombre == 0);
+                        Variables.items[Variables.valor, 1] = nombre;
 
-
-                        if (Variables.items[Variables.valor + i, 0] != Variables.items[Variables.valor + i, 1])
+                        if (Variables.items[Variables.valor, 0] != Variables.items[Variables.valor , 1])
                         {
                             do
                             {
                                 Console.Write("-> Stock: ");
-                                Variables.items[Variables.valor + i, 2] = Console.ReadLine();
-                                verificarStock = verificarStock1(i);
+                                Variables.items[Variables.valor, 2] = Console.ReadLine();
+                                stockValido = verificarStock(Variables.items[Variables.valor, 2]);
                             }
-                            while (verificarStock != 1);
+                            while (stockValido != 1);
 
                             do
                             {
                                 Console.Write("-> Precio: ");
-                                Variables.items[Variables.valor + i, 3] = Console.ReadLine();
-                                verificarPrecio = verificarPrecio1(i);
+                                Variables.items[Variables.valor, 3] = Console.ReadLine();
+                                precioValido = verificarPrecio(i);
                             }
-                            while (verificarPrecio != 1);
+                            while (precioValido != 1);
                         }
 
                         else
@@ -108,10 +108,11 @@ namespace Biblioteca
                             Console.WriteLine("\nEl código y el nombre del producto no pueden ser iguales. "); Console.ResetColor();
                         }
                     }
-                    while (Variables.items[Variables.valor + i, 0] == Variables.items[Variables.valor + i, 1]);
+                    while (Variables.items[Variables.valor, 0] == Variables.items[Variables.valor , 1]);
                     Variables.valor++;
-                    Console.Write("\n¿Desea continuar registrando? [S/N] -> ");
+                    Console.Write("\n¿Desea continuar registrando? [s/n] -> ");
                     continuar = char.ToUpper(Console.ReadKey().KeyChar);
+                    Console.WriteLine();
                     if (continuar == 'N')
                     {
                         break;
@@ -119,26 +120,25 @@ namespace Biblioteca
                 }
             }
 
-            public int verificarStock1(int i)
+            public int verificarStock(string numero)
             {
                 int stock;
 
-                while (!int.TryParse(Variables.items[Variables.valor + i, 2], out stock) || stock < 0)
+                while (!int.TryParse(numero, out stock) || stock < 0 || stock == 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("ERROR ");
+                    Console.Write("Stock invalido ");
                     Console.ResetColor();
-                    Console.Write("Ingrese un stock válido: ");
                     return 0;
                 }
                 return 1;
             }
 
-            public int verificarPrecio1(int i)
+            public int verificarPrecio(int i)
             {
                 double precio;
 
-                while (!double.TryParse(Variables.items[Variables.valor + i, 3], out precio) || precio < 0)
+                while (!double.TryParse(Variables.items[Variables.valor , 3], out precio) || precio < 0)
                 {
                     Console.WriteLine("ERROR. Ingrese un precio válido: ");
                     return 0;
@@ -168,7 +168,6 @@ namespace Biblioteca
                 Console.SetCursorPosition(62, 3); 
                 Console.Write("PRECIO");
                 Console.ResetColor();
-
                 Console.WriteLine();
 
 
@@ -176,13 +175,14 @@ namespace Biblioteca
                 {
                     if (Variables.items[i, 0] != null) // Verifica si la fila contiene datos, para asi evitar que se muestren los datos vacios
                     {
-                            Console.SetCursorPosition(2, 3 + i); 
+
+                            Console.SetCursorPosition(2, 4 + i); 
                             Console.Write(Variables.items[i, 0]);
-                            Console.SetCursorPosition(12, 3 + i); 
+                            Console.SetCursorPosition(12, 4 + i); 
                             Console.Write(Variables.items[i, 1]);
-                            Console.SetCursorPosition(52, 3 + i); 
+                            Console.SetCursorPosition(52, 4 + i); 
                             Console.Write(Variables.items[i, 2]);
-                            Console.SetCursorPosition(62, 3 + i); 
+                            Console.SetCursorPosition(62, 4 + i); 
                             Console.Write(Variables.items[i, 3]);
                     }
                 }
@@ -232,14 +232,18 @@ namespace Biblioteca
             }
             public void Modificar()
             {
-                productos R = new productos();
-                string code;
-                Console.Write("\nIngrese el código del producto a modificar (ejemplo:\"P99999\") -> "); code = Console.ReadLine();
-                R.buscar(code);
-                bool encontrado = false;
-                string COD, NOM, STO, PRE;
-                for (int i = 0; i < Variables.items.GetLength(0); i++) // Recorre las filas
+                if (MetodosAuxiliares.verificarExisteProductosRegistrados())
                 {
+                    productos R = new productos();
+                    string code;
+                    Console.Write("\nIngrese el código del producto a modificar (ejemplo:\"P99999\") -> ");
+                    code = Console.ReadLine().ToUpper();
+                    R.buscar(code);
+                    bool encontrado = false;
+                    string COD, NOM, STO, PRE;
+
+                    for (int i = 0; i < Variables.items.GetLength(0); i++) // Recorre las filas
+                    {
                     if (Variables.items[i, 0] != null && Variables.items[i, 0] == code) // Verifica que el código coincida
                     {
                         Console.Clear();
@@ -253,7 +257,7 @@ namespace Biblioteca
                             case 1:
                                 Console.Write("\nIngrese código modificado: ");
                                 COD = Console.ReadLine();
-                                Variables.items[i, 0] = COD;
+                                Variables.items[i, 0] = COD.ToUpper();
                                 break;
 
                             case 2:
@@ -275,18 +279,27 @@ namespace Biblioteca
                                 break;
 
                         }
+
                         encontrado = true;
                         break;
                     }
                 }
 
-                if (encontrado == false)
+
+                    if (encontrado == false)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("El producto con el código ingresado no existe.");
+                        Console.ResetColor();
+                    }
+
+                }
+                else
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("El producto con el código ingresado no existe.");
+                    Console.WriteLine("\n No hay productos para editar.");
                     Console.ResetColor();
                 }
-
 
 
             }
