@@ -7,7 +7,6 @@ namespace Biblioteca
 {
     public class EliminarProducto
     {
-        productos busca = new productos();
 
         public void Eliminar()
         {
@@ -15,8 +14,7 @@ namespace Biblioteca
             {
                 Console.Write("Ingrese código del producto a eliminar: ");
                 string cod = Console.ReadLine().Trim().ToUpper();
-
-                int indice = busca.buscar(cod); // Guardamos el índice del producto
+                int indice = MetodosAuxiliares.buscar(cod); // Guardamos el índice del producto
 
                 if (indice != -1)
                 {

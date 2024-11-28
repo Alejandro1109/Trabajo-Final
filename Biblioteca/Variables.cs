@@ -110,5 +110,17 @@ namespace Biblioteca
             return false;
 
         }
+
+        public static int buscar(string cod)
+        {
+            for (int i = 0; i < Variables.items.GetLength(0); i++) // Recorre las filas
+            {
+                if (Variables.items[i, 0] != null && Variables.items[i, 0] == cod)
+                {
+                    return i; // Retorna el índice de la fila donde se encuentra el código
+                }
+            }
+            return -1; // Retorna -1 si no encuentra el código
+        }
     }
 }

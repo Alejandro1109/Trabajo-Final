@@ -10,6 +10,7 @@ namespace Biblioteca
         {
 
             productos metodos = new productos();
+
             string codigo = "";
             string cantidadVenta = "";
             string stock = "";
@@ -73,8 +74,7 @@ namespace Biblioteca
 
                     }
 
-
-                    filaItems = metodos.buscar(codigo);
+                    filaItems = MetodosAuxiliares.buscar(codigo);
 
                     //Se registra la cantidad si es que pasa todas las verificaciones
                     if (string.IsNullOrEmpty(Variables.ventas[filaVentas, 2]))

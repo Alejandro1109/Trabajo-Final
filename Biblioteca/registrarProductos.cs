@@ -57,14 +57,14 @@ namespace Biblioteca
                 Console.Write("|                    ");
                 Console.Write("REGISTRAR PRODUCTO"); 
                 Console.Write("                   |\n");
-                Console.WriteLine(" ---------------------------------------------------------\n");
+                Console.WriteLine(" ---------------------------------------------------------");
 
                 for (int i = 0; ; i++)
                 {
                     
                     do
                     {
-                        Console.WriteLine($"Producto {i+1}");
+                        Console.WriteLine($"\nProducto {i+1}");
                         Console.Write("-> Código (ejemplo:\"P00000\"): ");
                         codigo = Console.ReadLine();
                         verificarCodigo1 = MetodosAuxiliares.VerificarCodigoExiste(codigo);
@@ -238,26 +238,15 @@ namespace Biblioteca
                     Console.ResetColor();
                 }
             }
-            public int buscar(string cod)
-            {
-                for (int i = 0; i < Variables.items.GetLength(0); i++) // Recorre las filas
-                {
-                    if (Variables.items[i, 0] != null && Variables.items[i, 0] == cod)
-                    {
-                        return i; // Retorna el índice de la fila donde se encuentra el código
-                    }
-                }
-                return -1; // Retorna -1 si no encuentra el código
-            }
+
             public void Modificar()
             {
                 if (MetodosAuxiliares.verificarExisteProductosRegistrados())
                 {
-                    productos R = new productos();
                     string code;
                     Console.Write("\nIngrese el código del producto a modificar (ejemplo:\"P99999\") -> ");
                     code = Console.ReadLine().ToUpper();
-                    R.buscar(code);
+                    MetodosAuxiliares.buscar(code);
                     bool encontrado = false;
                     string COD, NOM, STO, PRE;
 
@@ -327,7 +316,7 @@ namespace Biblioteca
                 Console.Write("Ingrese código del producto a eliminar: ");
                 string cod = Console.ReadLine().Trim();
 
-                int indice = buscar(cod); // Guardamos el índice del producto
+                int indice = MetodosAuxiliares.buscar(cod); // Guardamos el índice del producto
 
                 if (indice != -1)
                 {
