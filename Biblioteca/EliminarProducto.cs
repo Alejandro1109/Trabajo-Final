@@ -14,7 +14,7 @@ namespace Biblioteca
             if (MetodosAuxiliares.verificarExisteProductosRegistrados())
             {
                 Console.Write("Ingrese código del producto a eliminar: ");
-                string cod = Console.ReadLine().Trim();
+                string cod = Console.ReadLine().Trim().ToUpper();
 
                 int indice = busca.buscar(cod); // Guardamos el índice del producto
 

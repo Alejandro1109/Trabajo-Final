@@ -6,7 +6,6 @@ namespace Biblioteca
 {
     public class RegistrodeVentas
     {
-
         public void RegistrarVentas()
         {
 
@@ -18,17 +17,17 @@ namespace Biblioteca
             int filaVentas=0, filaItems;
 
 
-            //Verificamos si la lista de items tiene al menos un item
-
-
+            //Verificamos que exista algún producto registrado
             if (MetodosAuxiliares.verificarExisteProductosRegistrados())
             {
                 do
                 {
                     metodos.MostrarProductos();
-                    Console.WriteLine("           --------------------------------------------");
-                    Console.WriteLine("          |             REGISTRAR VENTA                |");
-                    Console.WriteLine("           --------------------------------------------\n");
+                    Console.WriteLine(" ---------------------------------------------------------");
+                    Console.Write("|                    ");
+                    Console.Write("REGISTRAR VENTA");
+                    Console.Write("                      |\n");
+                    Console.WriteLine(" ---------------------------------------------------------\n");
 
                     //Buscamos la primera fila vacia en la lista de ventas;
                     if (filaVentas == 0)
